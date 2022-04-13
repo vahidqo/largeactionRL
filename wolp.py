@@ -135,17 +135,17 @@ class WOLPAgent(object):
 
     def select_action(self, s_t, decay_epsilon=True):
         proto_action = self.ddpg_select_action(s_t, decay_epsilon=decay_epsilon)
-        # print("Proto action: {}, proto action.shape: {}".format(proto_action, proto_action.shape))
-        # print(proto_action)
+        print("Proto action: {}, proto action.shape: {}".format(proto_action, proto_action.shape))
+        print(proto_action)
 
         actions = self.action_space.search_point(proto_action, self.k_nearest_neighbors)[0]
-        # print("len(actions): {}".format(len(actions)))
+        print("len(actions): {}".format(len(actions)))
         states = np.tile(s_t, [len(actions), 1])
 
         a = [to_tensor(states), to_tensor(actions)]
-        # print("states: {}, actions: {}".format(a[0].size(), a[1].size()))
+        print("states: {}, actions: {}".format(a[0].size(), a[1].size()))
         actions_evaluation = self.critic([to_tensor(states), to_tensor(actions)])
-        # print("actions_evaluation: {}, actions_evaluation.size(): {}".format(actions_evaluation, actions_evaluation.size()))
+        print("actions_evaluation: {}, actions_evaluation.size(): {}".format(actions_evaluation, actions_evaluation.size()))
         actions_evaluation_np = actions_evaluation.detach().numpy()
         max_index = np.argmax(actions_evaluation_np)
 
